@@ -20,15 +20,13 @@
               <img :src="'https://www.gravatar.com/avatar/' + encodeURIComponent(message.user + Math.random()) + '?s=512&d=monsterid'"
                    alt="Avatar"
                    class="w-8 h-8 rounded-full" />
-              <div class="ml-2 bg-gray-800 rounded-lg p-2"
-                   :class="{ 'bg-purple-200': message.user === 'You' }">
+              <div class="ml-2 text-white bg-gray-800 rounded-lg p-2"
+                   :class="{ 'text-purple-900 bg-purple-200': message.user === 'You' }">
                 <p v-if="message.formattedText"
                    class="overflow-x-scroll"
                    :class="{ '': message.user === 'You' }"
                    v-html="message.formattedText"></p>
-                <p v-else
-                   class="text-white"
-                   :class="{ 'text-gray-800': message.user === 'You' }">{{ message.text }}</p>
+                <p v-else>{{ message.text }}</p>
               </div>
             </div>
             <p class="text-gray-500 mt-1 text-xs ml-10">{{ message.date }}</p>
@@ -77,12 +75,12 @@
   </div>
 </template>
 <script setup>
-import { useWebSocket, watchOnce } from '@vueuse/core'
+import { useWebSocket } from '@vueuse/core'
 
 const isSecure = location.protocol === "https:";
 const url = (isSecure ? "wss://" : "ws://") + location.host + "/_ws";
 
-const { status, data, send, open, close } = useWebSocket(`ws://${location.host}/_ws`)
+const { status, data, send, open, close } = useWebSocket(url)
 
 const message = ref('')
 const store = reactive({

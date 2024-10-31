@@ -102,8 +102,8 @@ export default defineWebSocketHandler({
       // Remove game from activeGames
       activeGames.splice(gameIndex, 1);
       console.log(`[peer] Active Games: ${activeGames.length}`);
-      game.playerSockets['player1']?.send(JSON.stringify({ type: 'game_end', message: 'Player 1 ended the Game due to disconnection.' }));
-      game.playerSockets['player2']?.send(JSON.stringify({ type: 'game_end', message: 'Player 2 ended the Game due to disconnection.' }));
+      game.playerSockets['player1']?.send(JSON.stringify({ type: 'game_end', message: 'Player 1 left the Game.' }));
+      game.playerSockets['player2']?.send(JSON.stringify({ type: 'game_end', message: 'Player 2 left the Game.' }));
     }
 
   }
