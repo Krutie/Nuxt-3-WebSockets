@@ -9,6 +9,33 @@
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+# Basic Implementation
+
+```ts
+export default defineWebSocketHandler({
+  open(peer) {
+    console.log("[ws] open: peer.id", peer.toString());
+    // Join new client to the "chat" channel
+    peer.send("Welcome to the server!");
+    peer.subscribe("chat");
+    // Notify every other connected client
+    peer.publish("chat", `[system] ${peer.id} joined!`);
+  },
+  message(peer, message) {
+    const data = JSON.parse(message.toString());
+    // The server re-broadcasts incoming messages to everyone
+    peer.publish("chat", JSON.stringify({ user: peer.toString(), message: message.toString() }));
+    }
+  },
+  close(peer, event) {
+    console.log("[ws] close");
+    peer.publish("chat", JSON.stringify({ user: "server", message: `${peer} left!` }));
+  },
+  error(peer, error) {
+    console.log("[ws] error");
+  },
+});
+```
 ## Setup
 
 Make sure to install dependencies:
